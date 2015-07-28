@@ -1,10 +1,17 @@
 defmodule Jira.Mixfile do
   use Mix.Project
 
+  @description """
+    An Elixir client library for JIRA + JIRA Agile / Greenhopper
+  """
+
   def project do
     [app: :jira,
      version: "0.0.1",
      elixir: "~> 1.0",
+     name: "jira",
+     description: @description,
+     package: package,
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      deps: deps]
@@ -30,5 +37,11 @@ defmodule Jira.Mixfile do
     [ {:httpoison, ">= 0.6.0"},
       {:poison, ">= 1.4.0"},
     ]
+  end
+
+  defp package do
+    [ contributors: ["Jeff Weiss"],
+      licenses: ["MIT"],
+      links: %{"Github" => "https://github.com/jeffweiss/jira"} ]
   end
 end

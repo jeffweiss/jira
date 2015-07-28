@@ -17,12 +17,15 @@ defmodule Jira.SprintReport do
     points_completed = completed_points(sprint_report)
     aggregate_scope_change = scope_change_details
       |> Enum.group_by(fn {_, _, x} -> x end)
-      |> Enum.map(fn {category, list} -> {category, list |> Enum.map(fn {_, x, _} -> x end) |> Enum.sum} end)
+      |> Enum.map(fn {category, list} -> {category |> category_to_atom, list |> Enum.map(fn {_, x, _} -> x end) |> Enum.sum} end)
 
-    [{"Committed", points_committed}, aggregate_scope_change, {"Completed", points_completed}, {"Scope Change Query", scope_change_query(sprint_report)}]
+    [aggregate_scope_change, committed: points_committed, completed: points_completed, scope_change: scope_change_query(sprint_report)]
     |> List.flatten
-    |> Enum.into(%{"name" => name(sprint_report)})
+    |> Enum.into(%{:name => name(sprint_report)})
   end
+
+  defp category_to_atom(nil), do: :nil
+  defp category_to_atom(category), do: category |> String.downcase |> String.to_atom
 
   def completed_points(%{"contents" => %{"completedIssuesEstimateSum" => %{"value" => value}}}) when is_number(value), do: value
   def completed_points(_), do: 0

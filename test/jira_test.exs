@@ -1,4 +1,4 @@
-defmodule JiraSprintMetricsTest do
+defmodule JiraTest do
   use ExUnit.Case
 
   test "the truth" do

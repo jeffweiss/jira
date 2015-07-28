@@ -3,7 +3,7 @@ defmodule Jira.API do
 
   ### HTTPoison.Base callbacks
   def process_url(url) do
-    (System.get_env("JIRA_HOST") || "https://tickets.puppetlabs.com") <> url
+    System.get_env("JIRA_HOST") <> url
   end
 
   def process_response_body(body) do

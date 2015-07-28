@@ -1,4 +1,4 @@
-JiraSprintMetrics
+Jira
 =================
 
-** TODO: Add description **
+Jira client library for Elixir

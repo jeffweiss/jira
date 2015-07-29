@@ -1,6 +1,6 @@
 defmodule Jira.Ticket do
   def get(key) do
-    Jira.API.ticket_details(key)
+    ConCache.get_or_store(:jira_cache, key, fn() -> Jira.API.ticket_details(key) end)
   end
 
   # This custom field is unique to my particular site. I'll add in an abstraction in a later release.

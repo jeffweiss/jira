@@ -40,4 +40,9 @@ defmodule Jira.API do
     get!("/rest/api/2/issue/#{key}", [authorization: authorization_header]).body
   end
 
+  def add_ticket_link(key, title, link) do
+    body = %{"object" => %{"url" => link, "title" => title}} |> Poison.encode!
+    post!("/rest/api/2/issue/#{key}/remotelink", body, [{"authorization", authorization_header}, {"Content-type", "application/json"}])
+  end
+
 end

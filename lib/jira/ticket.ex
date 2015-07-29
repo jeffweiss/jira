@@ -1,6 +1,12 @@
 defmodule Jira.Ticket do
   def get(key) do
-    ConCache.get_or_store(:jira_cache, key, fn() -> Jira.API.ticket_details(key) end)
+    ConCache.get_or_store(:jira_cache, key, fn() ->
+      details = Jira.API.ticket_details(key)
+      case scope_change_category(details) do
+        nil -> details
+        _   -> %ConCache.Item{value: details, ttl: :timer.hours(24*7)}
+      end
+    end)
   end
 
   # This custom field is unique to my particular site. I'll add in an abstraction in a later release.

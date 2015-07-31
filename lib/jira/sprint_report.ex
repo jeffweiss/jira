@@ -21,7 +21,7 @@ defmodule Jira.SprintReport do
 
     [aggregate_scope_change, committed: points_committed, completed: points_completed, scope_change: scope_change_query(sprint_report)]
     |> List.flatten
-    |> Enum.into(%{:name => name(sprint_report)})
+    |> Enum.into(%{:name => name(sprint_report), :uncategorized_tickets => net_added_scope_ticket_keys(sprint_report)})
   end
 
   defp category_to_atom(nil), do: :nil

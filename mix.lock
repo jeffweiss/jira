@@ -1,5 +1,4 @@
-%{"con_cache": {:hex, :con_cache, "0.8.0"},
-  "exactor": {:hex, :exactor, "2.1.2"},
+%{"exactor": {:hex, :exactor, "2.1.2"},
   "exjsx": {:hex, :exjsx, "3.1.0"},
   "hackney": {:hex, :hackney, "1.1.0"},
   "httpoison": {:hex, :httpoison, "0.6.2"},

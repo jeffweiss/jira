@@ -5,13 +5,6 @@ defmodule Jira do
     import Supervisor.Spec, warn: false
 
     children = [
-      worker(ConCache, [
-        [
-          ttl_check: :timer.seconds(30),
-          ttl: :timer.minutes(5)
-        ],
-        [name: :jira_cache]
-      ])
     ]
 
     opts = [strategy: :one_for_one, name: Jira.Supervisor]

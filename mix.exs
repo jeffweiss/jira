@@ -7,7 +7,7 @@ defmodule Jira.Mixfile do
 
   def project do
     [app: :jira,
-     version: "0.0.3",
+     version: "0.0.4",
      elixir: "~> 1.0",
      name: "jira",
      description: @description,
@@ -21,7 +21,7 @@ defmodule Jira.Mixfile do
   #
   # Type `mix help compile.app` for more information
   def application do
-    [applications: [:logger, :httpoison, :con_cache],
+    [applications: [:logger, :httpoison],
     mod: {Jira, []}]
   end
 
@@ -37,7 +37,6 @@ defmodule Jira.Mixfile do
   defp deps do
     [ {:httpoison, ">= 0.6.0"},
       {:poison, ">= 1.4.0"},
-      {:con_cache, "~> 0.8.0"},
     ]
   end
 

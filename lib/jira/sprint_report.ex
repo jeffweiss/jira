@@ -7,26 +7,6 @@ defmodule Jira.SprintReport do
   def name(%{"sprint" => %{"name" => name}}) when name != nil, do: name
   def name(_), do: "UNKNOWN"
 
-
-  def statistics(sprint_report) do
-    statistics(sprint_report, scope_change_detail(sprint_report))
-  end
-
-  def statistics(sprint_report, scope_change_details) do
-    points_committed = committed_points(sprint_report)
-    points_completed = completed_points(sprint_report)
-    aggregate_scope_change = scope_change_details
-      |> Enum.group_by(fn {_, _, x} -> x end)
-      |> Enum.map(fn {category, list} -> {category |> category_to_atom, list |> Enum.map(fn {_, x, _} -> x end) |> Enum.sum} end)
-
-    [aggregate_scope_change, committed: points_committed, completed: points_completed, scope_change: scope_change_query(sprint_report)]
-    |> List.flatten
-    |> Enum.into(%{:name => name(sprint_report), :uncategorized_tickets => net_added_scope_ticket_keys(sprint_report)})
-  end
-
-  defp category_to_atom(nil), do: :nil
-  defp category_to_atom(category), do: category |> String.downcase |> String.to_atom
-
   def completed_points(%{"contents" => %{"completedIssuesEstimateSum" => %{"value" => value}}}) when is_number(value), do: value
   def completed_points(_), do: 0
 
@@ -68,16 +48,6 @@ defmodule Jira.SprintReport do
   end
   def ticket_detail_by_key(_), do: nil
 
-  def scope_change_query(sprint_report) do
-    "key in (#{net_added_scope_ticket_keys(sprint_report) |> Enum.join (", ")})"
-  end
-
-  def scope_change_detail(sprint_report) do
-    sprint_report
-    |> net_added_scope_ticket_keys
-    |> Enum.map(fn(key) -> {key, ticket_detail_by_key(sprint_report, key) |> estimate_statistic_from_sprint_report_ticket_info, Jira.Ticket.get(key) |> Jira.Ticket.scope_change_category } end)
-  end
-
   defp estimate_sum(list, scope_change_keys, filter_key) do
     list
     |> filter_ticket_list(scope_change_keys, filter_key)
@@ -93,9 +63,8 @@ defmodule Jira.SprintReport do
   end
   defp filter_ticket_list(list, _, _), do: list
 
-
-  defp estimate_statistic_from_sprint_report_ticket_info(%{"estimateStatistic" => %{"statFieldValue" => %{"value" => value}}}) when is_number(value), do: value
-  defp estimate_statistic_from_sprint_report_ticket_info(_), do: 0
+  def estimate_statistic_from_sprint_report_ticket_info(%{"estimateStatistic" => %{"statFieldValue" => %{"value" => value}}}) when is_number(value), do: value
+  def estimate_statistic_from_sprint_report_ticket_info(_), do: 0
 
 end
 

@@ -10,4 +10,8 @@ defmodule Jira.Ticket do
   def add_link(key, title, link) do
     Jira.API.add_ticket_link(key, title, link)
   end
+
+  def add_watcher(key, username) do
+    Jira.API.add_ticket_watcher(key, username)
+  end
 end

@@ -8,11 +8,14 @@ defmodule Jira.API do
 
   def process_response_body(body) do
     body
-    |> Poison.decode!
+    |> decode_body
   end
 
+  defp decode_body(""), do: ""
+  defp decode_body(body), do: body |> Poison.decode!
+
   ### Internal Helpers
-  defp authorization_header do
+  def authorization_header do
     credentials = encoded_credentials(System.get_env("JIRA_USERNAME"), System.get_env("JIRA_PASSWORD"))
     "Basic #{credentials}"
   end
@@ -43,6 +46,16 @@ defmodule Jira.API do
   def add_ticket_link(key, title, link) do
     body = %{"object" => %{"url" => link, "title" => title}} |> Poison.encode!
     post!("/rest/api/2/issue/#{key}/remotelink", body, [{"authorization", authorization_header}, {"Content-type", "application/json"}])
+  end
+
+  def add_ticket_watcher(key, username) do
+    body = username |> Poison.encode!
+    post!("/rest/api/2/issue/#{key}/watchers", body, [{"authorization", authorization_header}, {"Content-type", "application/json"}])
+  end
+
+  def search(query) do
+    body = query |> Poison.encode!
+    post!("/rest/api/2/search", body, [{"authorization", authorization_header}, {"Content-type", "application/json"}])
   end
 
 end

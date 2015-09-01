@@ -1,9 +1,25 @@
 defmodule Jira.API do
   use HTTPoison.Base
 
+  defp config_or_env(key, env_var) do
+    Application.get_env(:jira, key, System.get_env(env_var))
+  end
+
+  defp host do
+    config_or_env(:host, "JIRA_HOST")
+  end
+
+  defp username do
+    config_or_env(:username, "JIRA_USERNAME")
+  end
+
+  defp password do
+    config_or_env(:password, "JIRA_PASSWORD")
+  end
+
   ### HTTPoison.Base callbacks
   def process_url(url) do
-    System.get_env("JIRA_HOST") <> url
+    host <> url
   end
 
   def process_response_body(body) do
@@ -20,12 +36,12 @@ defmodule Jira.API do
 
   ### Internal Helpers
   def authorization_header do
-    credentials = encoded_credentials(System.get_env("JIRA_USERNAME"), System.get_env("JIRA_PASSWORD"))
+    credentials = encoded_credentials(username, password)
     "Basic #{credentials}"
   end
 
-  defp encoded_credentials(username, password) do
-    "#{username}:#{password}"
+  defp encoded_credentials(user, pass) do
+    "#{user}:#{pass}"
     |> Base.encode64
   end
 

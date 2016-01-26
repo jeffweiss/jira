@@ -7,7 +7,7 @@ defmodule Jira.Mixfile do
 
   def project do
     [app: :jira,
-     version: "0.0.7",
+     version: "0.0.8",
      elixir: "~> 1.0",
      name: "jira",
      description: @description,
@@ -41,7 +41,7 @@ defmodule Jira.Mixfile do
   end
 
   defp package do
-    [ contributors: ["Jeff Weiss"],
+    [ maintainers: ["Jeff Weiss"],
       licenses: ["MIT"],
       links: %{"Github" => "https://github.com/jeffweiss/jira"} ]
   end

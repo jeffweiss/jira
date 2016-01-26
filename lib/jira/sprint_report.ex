@@ -10,7 +10,7 @@ defmodule Jira.SprintReport do
   def completed_points(%{"contents" => %{"completedIssuesEstimateSum" => %{"value" => value}}}) when is_number(value), do: value
   def completed_points(_), do: 0
 
-  def committed_points(%{"contents" => %{"issueKeysAddedDuringSprint" => scope_change_list, "puntedIssues" => removed_issues_list, "incompletedIssues" => incomplete_issues_list, "completedIssues" => completed_issues_list}}) do
+  def committed_points(%{"contents" => %{"issueKeysAddedDuringSprint" => scope_change_list, "puntedIssues" => removed_issues_list, "issuesNotCompletedInCurrentSprint" => incomplete_issues_list, "completedIssues" => completed_issues_list}}) do
     scope_add_keys = Map.keys(scope_change_list)
     [removed_issues_list, incomplete_issues_list, completed_issues_list]
     |> Enum.map(fn(x) -> estimate_sum(x, scope_add_keys, :exclude_scope_changes) end)
@@ -18,7 +18,7 @@ defmodule Jira.SprintReport do
   end
   def committed_points(_), do: 0
 
-  def added_scope_points(%{"contents" => %{"issueKeysAddedDuringSprint" => scope_change_list, "incompletedIssues" => incomplete_issues_list, "completedIssues" => completed_issues_list}}) do
+  def added_scope_points(%{"contents" => %{"issueKeysAddedDuringSprint" => scope_change_list, "issuesNotCompletedInCurrentSprint" => incomplete_issues_list, "completedIssues" => completed_issues_list}}) do
     scope_add_keys = Map.keys(scope_change_list)
     [incomplete_issues_list, completed_issues_list]
     |> Enum.map(fn(x) -> estimate_sum(x, scope_add_keys, :only_scope_changes) end)
@@ -40,7 +40,7 @@ defmodule Jira.SprintReport do
     added_scope_ticket_keys(sprint_report) -- removed_scope_ticket_keys(sprint_report)
   end
 
-  def ticket_detail_by_key(%{"contents" => %{"puntedIssues" => removed_issues_list, "incompletedIssues" => incomplete_issues_list, "completedIssues" => completed_issues_list}}, ticket_key) do
+  def ticket_detail_by_key(%{"contents" => %{"puntedIssues" => removed_issues_list, "issuesNotCompletedInCurrentSprint" => incomplete_issues_list, "completedIssues" => completed_issues_list}}, ticket_key) do
     [removed_issues_list, completed_issues_list, incomplete_issues_list]
     |> List.flatten
     |> Enum.filter(fn(%{"key" => key}) -> key == ticket_key end)

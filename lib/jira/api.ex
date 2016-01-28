@@ -63,6 +63,14 @@ defmodule Jira.API do
     get!("/rest/api/2/issue/#{key}").body
   end
 
+  def ticket_details(key, fields) do
+    get!("/rest/api/2/issue/#{key}?fields=#{fields}").body
+  end
+
+  def ticket_details(key, fields, expand) do
+    get!("/rest/api/2/issue/#{key}?fields=#{fields}&expand=#{expand}").body
+  end
+
   def add_ticket_link(key, title, link) do
     body = %{"object" => %{"url" => link, "title" => title}} |> Poison.encode!
     post!("/rest/api/2/issue/#{key}/remotelink", body, [{"Content-type", "application/json"}])

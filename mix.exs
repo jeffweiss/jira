@@ -8,7 +8,7 @@ defmodule Jira.Mixfile do
   def project do
     [
       app: :jira,
-      version: "0.0.8",
+      version: "0.1.0",
       elixir: "~> 1.8",
       name: "jira",
       description: @description,

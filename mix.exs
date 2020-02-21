@@ -23,7 +23,7 @@ defmodule Jira.Mixfile do
   #
   # Type `mix help compile.app` for more information
   def application do
-    [applications: [:logger, :httpoison], mod: {Jira, []}]
+    [applications: [:logger, :mojito], mod: {Jira, []}]
   end
 
   # Dependencies can be Hex packages:
@@ -36,7 +36,10 @@ defmodule Jira.Mixfile do
   #
   # Type `mix help deps` for more examples and options
   defp deps do
-    [{:httpoison, "~> 1.6"}, {:poison, "~> 4.0"}]
+    [
+      {:mojito, "~> 0.6"},
+      {:jason, "~> 1.0"}
+    ]
   end
 
   defp package do

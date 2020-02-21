@@ -1,8 +1,10 @@
-%{"exactor": {:hex, :exactor, "2.1.2"},
+%{
+  "exactor": {:hex, :exactor, "2.1.2"},
   "exjsx": {:hex, :exjsx, "3.1.0"},
-  "hackney": {:hex, :hackney, "1.1.0"},
-  "httpoison": {:hex, :httpoison, "0.6.2"},
-  "idna": {:hex, :idna, "1.0.2"},
+  "hackney": {:hex, :hackney, "1.1.0", "e999ef5fbd9d199b00953b26cbcb4396402e8e4fca6d2c48501253d98bd63723", [:make, :rebar], [{:idna, "~> 1.0", [hex: :idna, repo: "hexpm", optional: false]}, {:ssl_verify_hostname, "~> 1.0", [hex: :ssl_verify_hostname, repo: "hexpm", optional: false]}], "hexpm"},
+  "httpoison": {:hex, :httpoison, "0.6.2", "a1e95f5b00b0a17b5793a288e121e61399864a8779dbbc3aeda7580e0043d2b0", [:mix], [{:hackney, "~> 1.0", [hex: :hackney, repo: "hexpm", optional: false]}], "hexpm"},
+  "idna": {:hex, :idna, "1.0.2", "397e3d001c002319da75759b0a81156bf11849c71d565162436d50020cb7265e", [:make], [], "hexpm"},
   "jsx": {:hex, :jsx, "2.4.0"},
-  "poison": {:hex, :poison, "1.4.0"},
-  "ssl_verify_hostname": {:hex, :ssl_verify_hostname, "1.0.4"}}
+  "poison": {:hex, :poison, "1.4.0", "cd5afb9db7f0d19487572fa28185b6d4de647f14235746824e77b3139b79b725", [:mix], [], "hexpm"},
+  "ssl_verify_hostname": {:hex, :ssl_verify_hostname, "1.0.4", "f357b4dd338c062988d4f2aa5e983adafd555c5c74dcf259d221572327dd8086", [:make], [], "hexpm"},
+}

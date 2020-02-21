@@ -4,7 +4,9 @@ defmodule Jira.Ticket do
   end
 
   # If you use Greenhopper/Jira Agile, this *should* consistently be the field for estimates
-  def estimate(%{"fields" => %{"customfield_10002" => estimate}}) when is_number(estimate), do: estimate
+  def estimate(%{"fields" => %{"customfield_10002" => estimate}}) when is_number(estimate),
+    do: estimate
+
   def estimate(_), do: 0
 
   def add_link(key, title, link) do

@@ -6,23 +6,24 @@ defmodule Jira.Mixfile do
   """
 
   def project do
-    [app: :jira,
-     version: "0.0.8",
-     elixir: "~> 1.0",
-     name: "jira",
-     description: @description,
-     package: package,
-     build_embedded: Mix.env == :prod,
-     start_permanent: Mix.env == :prod,
-     deps: deps]
+    [
+      app: :jira,
+      version: "0.0.8",
+      elixir: "~> 1.8",
+      name: "jira",
+      description: @description,
+      package: package,
+      build_embedded: Mix.env() == :prod,
+      start_permanent: Mix.env() == :prod,
+      deps: deps
+    ]
   end
 
   # Configuration for the OTP application
   #
   # Type `mix help compile.app` for more information
   def application do
-    [applications: [:logger, :httpoison],
-    mod: {Jira, []}]
+    [applications: [:logger, :httpoison], mod: {Jira, []}]
   end
 
   # Dependencies can be Hex packages:
@@ -35,14 +36,14 @@ defmodule Jira.Mixfile do
   #
   # Type `mix help deps` for more examples and options
   defp deps do
-    [ {:httpoison, ">= 0.6.0"},
-      {:poison, ">= 1.4.0"},
-    ]
+    [{:httpoison, ">= 0.6.0"}, {:poison, ">= 1.4.0"}]
   end
 
   defp package do
-    [ maintainers: ["Jeff Weiss"],
+    [
+      maintainers: ["Jeff Weiss"],
       licenses: ["MIT"],
-      links: %{"Github" => "https://github.com/jeffweiss/jira"} ]
+      links: %{"Github" => "https://github.com/jeffweiss/jira"}
+    ]
   end
 end

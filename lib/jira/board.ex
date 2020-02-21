@@ -5,17 +5,17 @@ defmodule Jira.Board do
   end
 
   def all(like: regex) do
-    all
+    all()
     |> filter_for_name(regex)
   end
 
   def all(sprints: val) do
-    all
+    all()
     |> filter_for_sprints_enabled(val)
   end
 
   def all(like: regex, sprints: val) do
-    all
+    all()
     |> filter_for_name(regex)
     |> filter_for_sprints_enabled(val)
   end

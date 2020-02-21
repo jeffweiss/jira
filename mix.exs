@@ -12,10 +12,10 @@ defmodule Jira.Mixfile do
       elixir: "~> 1.8",
       name: "jira",
       description: @description,
-      package: package,
+      package: package(),
       build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
-      deps: deps
+      deps: deps()
     ]
   end
 
@@ -36,7 +36,7 @@ defmodule Jira.Mixfile do
   #
   # Type `mix help deps` for more examples and options
   defp deps do
-    [{:httpoison, ">= 0.6.0"}, {:poison, ">= 1.4.0"}]
+    [{:httpoison, "~> 1.6"}, {:poison, "~> 4.0"}]
   end
 
   defp package do

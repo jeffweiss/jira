@@ -19,7 +19,7 @@ defmodule Jira.API do
 
   ### HTTPoison.Base callbacks
   def process_url(url) do
-    host <> url
+    host() <> url
   end
 
   def process_response_body(body) do
@@ -28,7 +28,7 @@ defmodule Jira.API do
   end
 
   def process_request_headers(headers) do
-    [{"authorization", authorization_header} | headers]
+    [{"authorization", authorization_header()} | headers]
   end
 
   defp decode_body(""), do: ""
@@ -36,7 +36,7 @@ defmodule Jira.API do
 
   ### Internal Helpers
   def authorization_header do
-    credentials = encoded_credentials(username, password)
+    credentials = encoded_credentials(username(), password())
     "Basic #{credentials}"
   end
 

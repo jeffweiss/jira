@@ -66,6 +66,11 @@ defmodule Jira.API do
     get!("/rest/api/2/issue/#{key}")
   end
 
+  def add_ticket_comment(key, comment) do
+    body = %{"body"=> comment} |> Jason.encode!()
+    post!("/rest/api/2/issue/#{key}/comment", body, [{"Content-type", "application/json"}])
+  end
+
   def add_ticket_link(key, title, link) do
     body = %{"object" => %{"url" => link, "title" => title}} |> Jason.encode!()
     post!("/rest/api/2/issue/#{key}/remotelink", body, [{"Content-type", "application/json"}])

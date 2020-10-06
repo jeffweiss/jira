@@ -24,6 +24,10 @@ defmodule Jira.Ticket do
     Jira.API.set_ticket_estimate(key, estimate)
   end
 
+  def add_comment(key, text) do
+    Jira.API.add_ticket_comment(key, text)
+  end
+
   def add_link(key, title, link) do
     Jira.API.add_ticket_link(key, title, link)
   end

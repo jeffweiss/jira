@@ -67,33 +67,31 @@ defmodule Jira.API do
   end
 
   def add_ticket_comment(key, comment) do
-    body = %{"body"=> comment} |> Jason.encode!()
-    post!("/rest/api/2/issue/#{key}/comment", body, [{"Content-type", "application/json"}])
+    body = %{"body"=> comment}
+    post_as_json!("/rest/api/2/issue/#{key}/comment", body)
   end
 
   def add_ticket_link(key, title, link) do
-    body = %{"object" => %{"url" => link, "title" => title}} |> Jason.encode!()
-    post!("/rest/api/2/issue/#{key}/remotelink", body, [{"Content-type", "application/json"}])
+    body = %{"object" => %{"url" => link, "title" => title}}
+    post_as_json!("/rest/api/2/issue/#{key}/remotelink", body)
   end
 
   def add_ticket_watcher(key, username) do
-    body = username |> Jason.encode!()
-    post!("/rest/api/2/issue/#{key}/watchers", body, [{"Content-type", "application/json"}])
+    post_as_json!("/rest/api/2/issue/#{key}/watchers", username)
   end
 
   def set_ticket_estimate(key, estimate) do
-    body = %{"fields" => %{"customfield_10002" => estimate}} |> Jason.encode!()
-    put!("/rest/api/2/issue/#{key}", body, [{"Content-type", "application/json"}])
+    body = %{"fields" => %{"customfield_10002" => estimate}}
+    put_as_json!("/rest/api/2/issue/#{key}", body)
   end
 
   def set_custom_field(key, custom_field, value) do
-    body = %{"fields" => %{custom_field => value}} |> Jason.encode!()
-    put!("/rest/api/2/issue/#{key}", body, [{"Content-type", "application/json"}])
+    body = %{"fields" => %{custom_field => value}}
+    put_as_json!("/rest/api/2/issue/#{key}", body)
   end
 
   def search(query) do
-    body = query |> Jason.encode!()
-    post!("/rest/api/2/search", body, [{"Content-type", "application/json"}])
+    post_as_json!("/rest/api/2/search", query)
   end
 
   def get!(path) do
@@ -102,11 +100,21 @@ defmodule Jira.API do
     process_response_body(response.body)
   end
 
+  def post_as_json!(path, content) do
+    json_content = Jason.encode!(content)
+    post!(path, json_content, [{"Content-type", "application/json"}])
+  end
+
   def post!(path, content, extra_headers) do
     {:ok, response} =
       Mojito.post(process_url(path), process_request_headers(extra_headers), content)
 
     process_response_body(response.body)
+  end
+
+  def put_as_json!(path, content) do
+    json_content = Jason.encode!(content)
+    put!(path, json_content, [{"Content-type", "application/json"}])
   end
 
   def put!(path, content, extra_headers) do

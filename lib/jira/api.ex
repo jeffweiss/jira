@@ -1,5 +1,4 @@
 defmodule Jira.API do
-
   defp config_or_env(key, env_var) do
     Application.get_env(:jira, key, System.get_env(env_var))
   end
@@ -77,6 +76,16 @@ defmodule Jira.API do
     post!("/rest/api/2/issue/#{key}/watchers", body, [{"Content-type", "application/json"}])
   end
 
+  def set_ticket_estimate(key, estimate) do
+    body = %{"fields" => %{"customfield_10002" => estimate}} |> Jason.encode!()
+    put!("/rest/api/2/issue/#{key}", body, [{"Content-type", "application/json"}])
+  end
+
+  def set_custom_field(key, custom_field, value) do
+    body = %{"fields" => %{custom_field => value}} |> Jason.encode!()
+    put!("/rest/api/2/issue/#{key}", body, [{"Content-type", "application/json"}])
+  end
+
   def search(query) do
     body = query |> Jason.encode!()
     post!("/rest/api/2/search", body, [{"Content-type", "application/json"}])
@@ -89,7 +98,15 @@ defmodule Jira.API do
   end
 
   def post!(path, content, extra_headers) do
-    {:ok, response} = Mojito.post(process_url(path), process_request_headers(extra_headers), content)
+    {:ok, response} =
+      Mojito.post(process_url(path), process_request_headers(extra_headers), content)
+
+    process_response_body(response.body)
+  end
+
+  def put!(path, content, extra_headers) do
+    {:ok, response} =
+      Mojito.put(process_url(path), process_request_headers(extra_headers), content)
 
     process_response_body(response.body)
   end
